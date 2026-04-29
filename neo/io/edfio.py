@@ -24,6 +24,6 @@ class EDFIO(EDFRawIO, BaseFromRaw):
 
     _prefered_signal_group_mode = "group-by-same-units"
 
-    def __init__(self, filename=""):
-        EDFRawIO.__init__(self, filename=filename)
+    def __init__(self, filename="", read_annotations=True):
+        EDFRawIO.__init__(self, filename=filename, read_annotations=read_annotations)
         BaseFromRaw.__init__(self, filename)

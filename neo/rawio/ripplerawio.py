@@ -357,7 +357,8 @@ class RippleRawIO(BaseRawIO):
                         ext_header.append(d)
 
                 if len(ext_header) > 0:
-                    signal_streams.append((f'nfx{nfx_nb}', str(nfx_nb)))
+                    # Added buffer_id here too :/
+                    signal_streams.append((f'nfx{nfx_nb}', str(nfx_nb), str(nfx_nb)))
                 for i, chan in enumerate(ext_header):
                     if spec in ['2.2', '2.3']:
                         ch_name = chan['electrode_label'].decode()
@@ -393,10 +394,11 @@ class RippleRawIO(BaseRawIO):
                     # )
                     ##########
 
-                    stream_id = str(nfx_nb)
+                    # (added buffer_id = stream_id, was giving error otherwise)
+                    buffer_id = stream_id = str(nfx_nb)
                     signal_channels.append((
                         ch_name, ch_id, sr, sig_dtype, units, gain, offset,
-                        stream_id
+                        stream_id, buffer_id
                     ))
 
             # check nb segment per nfx
@@ -1562,7 +1564,7 @@ class RippleRawIO(BaseRawIO):
                 year=self.__nev_basic_header['year'],
                 month=self.__nev_basic_header['month'],
                 day=self.__nev_basic_header['day'],
-                # day=np.uint16(self.filename.split('/')[-2][-2:]), # Added as a fix because some files had invalid dates or something in the header...? - Abraar
+                # day=np.uint16(self.filename.split('/')[-2][-2:]), # Added as a fix because some ripple files had invalid dates in the header
                 hour=self.__nev_basic_header['hour'],
                 minute=self.__nev_basic_header['minute'],
                 second=self.__nev_basic_header['second'],
